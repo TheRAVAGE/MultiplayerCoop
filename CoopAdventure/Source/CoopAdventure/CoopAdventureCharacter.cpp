@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Debug/Debug.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,6 +50,11 @@ ACoopAdventureCharacter::ACoopAdventureCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+}
+
+void ACoopAdventureCharacter::Tick(float DeltaTime)
+{
+	Debug::PrintString(GetWorld(), "DeltaTime", FString::Printf(TEXT("%f"), GetWorld()->GetTimeSeconds()), 1.f, FColor::Green);
 }
 
 void ACoopAdventureCharacter::BeginPlay()

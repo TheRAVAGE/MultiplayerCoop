@@ -39,6 +39,7 @@ class ACoopAdventureCharacter : public ACharacter
 
 public:
 	ACoopAdventureCharacter();
+	virtual void Tick( float DeltaTime ) override;
 	
 
 protected:

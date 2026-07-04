@@ -4,6 +4,8 @@
 #include "CoopAdventureCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
+#include "Debug/Debug.h"
+
 ACoopAdventureGameMode::ACoopAdventureGameMode()
 {
 	// set default pawn class to our Blueprinted character
@@ -12,4 +14,6 @@ ACoopAdventureGameMode::ACoopAdventureGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+	
 }
+
