@@ -52,11 +52,6 @@ ACoopAdventureCharacter::ACoopAdventureCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
-void ACoopAdventureCharacter::Tick(float DeltaTime)
-{
-	Debug::PrintString(GetWorld(), "DeltaTime", FString::Printf(TEXT("%f"), GetWorld()->GetTimeSeconds()), 1.f, FColor::Green);
-}
-
 void ACoopAdventureCharacter::BeginPlay()
 {
 	// Call the base class  

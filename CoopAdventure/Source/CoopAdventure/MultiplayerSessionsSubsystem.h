@@ -23,4 +23,21 @@ public:
 	
 	IOnlineSessionPtr SessionInterface;
 	
+	UFUNCTION(BlueprintCallable)
+	void CreateServer(FString ServerName);
+	UFUNCTION(BlueprintCallable)
+	void FindServer(FString ServerName);
+	
+	void CreateSessionComplete(FName SessionName, bool bWasSucccessful);
+	void DestroySessionComplete(FName SessionName, bool bWasSucccessful);
+	void FindSessionComplete(bool bWasSucccessful);
+	void JoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
+	
+	bool bIsCreatingServerAfterDestroy;
+	FString DestroyServerName;
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
+	FString ServerNameToFind;
+	FName CurrentSessionName;
+	
 };
+

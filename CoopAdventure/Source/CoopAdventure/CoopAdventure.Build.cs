@@ -16,7 +16,6 @@ public class CoopAdventure : ModuleRules
 			"InputCore", 
 			"HeadMountedDisplay", 
 			"EnhancedInput",
-			"Kismet",
 			"OnlineSubsystem",
 			"OnlineSubsystemSteam"
         });

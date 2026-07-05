@@ -1,1 +1,1 @@
-"C:\Program Files\Epic Games\UE_5.2\Engine\Binaries\Win64\UnrealEditor.exe" "C:\Projects\Unreal Engine 5\01.Courses\Unreal Engine 5 C++ Multiplayer- Make An Online Coop\CoopAdventure\CoopAdventure.uproject" -game -ResX=960 -ResY=540 -log -WINDOWED
+"C:\Program Files\Epic Games\UE_5.2\Engine\Binaries\Win64\UnrealEditor.exe" "C:\Projects\Unreal Engine 5\01.Courses\Unreal Engine 5 C++ Multiplayer- Make An Online Coop\CoopAdventure\CoopAdventure.uproject" -game -ResX=960 -ResY=540 -log -WINDOWED -NOSTEAM
