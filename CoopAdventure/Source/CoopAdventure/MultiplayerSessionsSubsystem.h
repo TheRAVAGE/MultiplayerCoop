@@ -7,6 +7,9 @@
 #include "Interfaces/OnlineSessionInterface.h"
 #include "MultiplayerSessionsSubsystem.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCreateSessionComplete, bool, bWasSuccessful);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FJoinSessionComplete, bool, bWasSuccessful);
+
 /**
  * 
  */
@@ -39,5 +42,12 @@ public:
 	FString ServerNameToFind;
 	FName CurrentSessionName;
 	
+	UPROPERTY(BlueprintAssignable)
+	FCreateSessionComplete OnCreateSessionComplete;
+	UPROPERTY(BlueprintAssignable)
+	FJoinSessionComplete OnJoinSessionComplete;
+	
+	UPROPERTY(BlueprintReadWrite)
+	FString GameMapPath;
 };
 

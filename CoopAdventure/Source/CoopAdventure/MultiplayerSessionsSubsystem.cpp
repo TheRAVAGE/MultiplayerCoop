@@ -57,6 +57,7 @@ void UMultiplayerSessionsSubsystem::CreateServer(FString ServerName)
 	if (ServerName.IsEmpty())
 	{
 		Debug::PrintMessage(FString::Printf(TEXT("Server Name is Empty")));
+		OnCreateSessionComplete.Broadcast(false);
 		return;
 	}
 	
@@ -96,6 +97,7 @@ void UMultiplayerSessionsSubsystem::FindServer(FString ServerName)
 	if (ServerName.IsEmpty())
 	{
 		Debug::PrintMessage(FString::Printf(TEXT("Server Name is Empty")));
+		OnJoinSessionComplete.Broadcast(false);
 		return;
 	}
 	
@@ -111,16 +113,21 @@ void UMultiplayerSessionsSubsystem::FindServer(FString ServerName)
 void UMultiplayerSessionsSubsystem::CreateSessionComplete(FName SessionName, bool bWasSucccessful)
 {
 	Debug::PrintMessage(FString::Printf(TEXT("Create Session Complete : %s, Success : %s"), *SessionName.ToString(), bWasSucccessful ? TEXT("True") : TEXT("False")), FColor::Green, true);
-	
+	OnCreateSessionComplete.Broadcast(bWasSucccessful);
 	if (bWasSucccessful)
 	{
-		GetWorld()->ServerTravel("/Game/ThirdPerson/Maps/ThirdPersonMap?listen");
+		FString Path = "/Game/ThirdPerson/Maps/ThirdPersonMap?listen";
+		if (!GameMapPath.IsEmpty())
+		{
+			Path = FString::Printf(TEXT("%s?listen"), *GameMapPath);
+		}
+		GetWorld()->ServerTravel(Path);
 	}
 }
 
 void UMultiplayerSessionsSubsystem::DestroySessionComplete(FName SessionName, bool bWasSucccessful)
 {
-	Debug::PrintMessage(FString::Printf(TEXT("Destroy Session Complete : %s, Success : %s"), *SessionName.ToString(), bWasSucccessful ? TEXT("True") : TEXT("False")), FColor::Green, true);
+	// Debug::PrintMessage(FString::Printf(TEXT("Destroy Session Complete : %s, Success : %s"), *SessionName.ToString(), bWasSucccessful ? TEXT("True") : TEXT("False")), FColor::Green, true);
 	
 	if (bIsCreatingServerAfterDestroy)
 	{
@@ -134,6 +141,7 @@ void UMultiplayerSessionsSubsystem::FindSessionComplete(bool bWasSucccessful)
 	if (!bWasSucccessful) return;
 	if (ServerNameToFind.IsEmpty()) return;
 	
+	OnJoinSessionComplete.Broadcast(bWasSucccessful);
 	TArray<FOnlineSessionSearchResult> Results = SessionSearch->SearchResults;
 	FOnlineSessionSearchResult* FoundSession = 0;
 	Debug::PrintMessage(FString::Printf(TEXT("Find Sessions Complete, Number of Sessions found : %d"), Results.Num()), FColor::Green, true);
@@ -160,6 +168,7 @@ void UMultiplayerSessionsSubsystem::FindSessionComplete(bool bWasSucccessful)
 			SessionInterface->JoinSession(0, CurrentSessionName, *FoundSession);
 		} else
 		{
+			OnJoinSessionComplete.Broadcast(false);
 			Debug::PrintMessage("Couldn't find server");
 			ServerNameToFind = FString();
 		}
@@ -168,6 +177,7 @@ void UMultiplayerSessionsSubsystem::FindSessionComplete(bool bWasSucccessful)
 
 void UMultiplayerSessionsSubsystem::JoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
 {
+	OnJoinSessionComplete.Broadcast(Result == EOnJoinSessionCompleteResult::Success);
 	if (Result == EOnJoinSessionCompleteResult::Success)
 	{
 		Debug::PrintMessage(FString::Printf(TEXT("Join Session Complete : %s, Success : %s"), *SessionName.ToString(), LexToString(Result)), FColor::Green, true);
@@ -187,6 +197,7 @@ void UMultiplayerSessionsSubsystem::JoinSessionComplete(FName SessionName, EOnJo
 			}
 		} else
 		{
+			OnJoinSessionComplete.Broadcast(false);
 			Debug::PrintMessage(FString::Printf(TEXT("Failed to get resolved connect string")), FColor::Red, true);
 		}
 	}
